@@ -62,10 +62,12 @@ function copyFolder(origPath, copyPath) {
       arr.forEach(item => {
         if (item.isFile()) {
           fs.rm(copyPath, { recursive: true, force: true }, () => {
-            fs.promises.mkdir(copyPath, { recursive: true });
-            const itemPath = path.join(origPath, item.name);
-            const copyItemPath = path.join(copyPath, item.name);
-            fs.promises.copyFile(itemPath, copyItemPath);
+            fs.promises.mkdir(copyPath, { recursive: true })
+              .then(() => {
+                const itemPath = path.join(origPath, item.name);
+                const copyItemPath = path.join(copyPath, item.name);
+                fs.promises.copyFile(itemPath, copyItemPath);
+              });
           });
         } else {
           const itemPath = path.join(origPath, item.name);
